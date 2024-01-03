@@ -1,4 +1,5 @@
 import React from 'react'
+import { useCallback } from 'react'
 
 const Message = React.memo(({ message }) => {
     return(
@@ -6,16 +7,17 @@ const Message = React.memo(({ message }) => {
     )
 })
 
-const ListItem = ({ post }) => {
+const ListItem = React.memo(({ post }) => {
     return (
         <li key={post.id}>
             <p>{post.title}</p>
         </li>
     )
-}
+})
 
 
-const List = ({ posts }) => {
+const List = React.memo(({ posts, testFunction }) => {
+    console.log('List component is rendering....')
     return (
          <ul>
             {posts.map(post => (
@@ -23,16 +25,18 @@ const List = ({ posts }) => {
             ))}
          </ul>
     )
-}
+})
 
-const B = ({ message, posts }) => {
-  return (
-    <div>
-      <h1>B Component</h1>
-      <Message message={message} />
-      <List posts={posts} />
-    </div>
-  )
-}
+const B = React.memo(({ message, posts }) => {
+    console.log('B Component is redering...')
+    const testFunction = useCallback(() => {}, []);
+    return (
+        <div>
+        <h1>B Component</h1>
+        <Message message={message} />
+        <List posts={posts} testFunction={testFunction} />
+        </div>
+    )
+})
 
 export default B
